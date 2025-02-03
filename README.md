@@ -38,7 +38,7 @@ Constatamos uma intermitência no serviço disponibilizado. Às vezes, a operaç
 O comportamento parece se normalizar sem nenhuma intervenção algum tempo depois, mas logo volta a ocorrer novamente.
 Segue evidência na imagem abaixo.
 
-(A imagem de evidência encontra-se dentro da pasta "resources" deste projeto).
+![Imagem de evidência](src/main/resources/imagemBug.png)
 
 ### Como entregar
 1. Faça um `clone` deste repositório em sua máquina.
