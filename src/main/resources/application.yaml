@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: avaliacao-tecnica-canais
+  datasource:
+    url: jdbc:h2:mem:mydb
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    database-platform: org.hibernate.dialect.H2Dialect
+  sql:
+    init:
+      mode: always
+  h2:
+    console:
+      enabled: true
+
+
+
+
+
