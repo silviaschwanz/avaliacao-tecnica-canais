@@ -1,0 +1,40 @@
+services:
+  api-usuarios-db:
+    image: mysql:8.0
+    container_name: mysql
+    env_file: .env
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 2048M
+    ports:
+      - "${HOST_DB_PORT}:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - api-usuarios-network
+
+  api_usuarios_db_test:
+    image: mysql:8.0
+    container_name: mysql-test
+    env_file: .env
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 2048M
+    ports:
+      - "${HOST_DB_TEST_PORT}:3306"
+    volumes:
+      - mysql-data-test:/var/lib/mysql
+    networks:
+      - api-usuarios-network
+
+volumes:
+  mysql-data:
+  mysql-data-test:
+
+networks:
+  api-usuarios-network:
+    driver: bridge

@@ -34,3 +34,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Variáveis de ambiente - dados sensíveis ###
+.env
+src/main/resources/.env
