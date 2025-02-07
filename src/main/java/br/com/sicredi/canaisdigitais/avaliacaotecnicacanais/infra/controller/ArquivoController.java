@@ -1,5 +1,6 @@
-package br.com.sicredi.canaisdigitais.avaliacaotecnicacanais;
+package br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.controller;
 
+import br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.gateways.ArquivoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController

@@ -1,4 +1,4 @@
-package br.com.sicredi.canaisdigitais.avaliacaotecnicacanais;
+package br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.controller;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;

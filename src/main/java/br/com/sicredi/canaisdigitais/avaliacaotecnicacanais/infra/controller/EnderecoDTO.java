@@ -1,4 +1,4 @@
-package br.com.sicredi.canaisdigitais.avaliacaotecnicacanais;
+package br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.controller;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;

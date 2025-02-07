@@ -1,12 +1,14 @@
-package br.com.sicredi.canaisdigitais.avaliacaotecnicacanais;
+package br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.gateways;
 
+import br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.persistence.Arquivo;
+import br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.persistence.ArquivoRepository;
+import br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.controller.ArquivoDTO;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
