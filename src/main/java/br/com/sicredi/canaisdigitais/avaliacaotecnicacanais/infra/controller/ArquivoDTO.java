@@ -1,5 +1,6 @@
-package br.com.sicredi.canaisdigitais.avaliacaotecnicacanais;
+package br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.controller;
 
+import br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.gateways.ConteudoDTO;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
