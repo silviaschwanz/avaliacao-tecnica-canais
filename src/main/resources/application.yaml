@@ -1,23 +1,27 @@
 spring:
   application:
     name: avaliacao-tecnica-canais
+  config:
+    import: optional:classpath:.env[.properties]
   datasource:
-    url: jdbc:h2:mem:mydb
-    username: sa
-    password: password
-    driverClassName: org.h2.Driver
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driverClassName: com.mysql.cj.jdbc.Driver
   jpa:
+    show-sql: true
+    generate-ddl : false
     hibernate:
-      ddl-auto: update
-    database-platform: org.hibernate.dialect.H2Dialect
-  sql:
-    init:
-      mode: always
-  h2:
-    console:
-      enabled: true
+      ddl-auto: none
+      format_sql: true
+      default_schema: api_usuarios
+  flyway:
+    enabled: true
+    schemas: api_usuarios
+    create-schemas: true
+    locations: classpath:db/migration
 
-
-
-
-
+logging:
+  level:
+    org:
+      flywaydb: DEBUG
