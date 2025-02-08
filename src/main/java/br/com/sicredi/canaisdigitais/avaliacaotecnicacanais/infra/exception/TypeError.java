@@ -1,4 +1,4 @@
-package br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.exception.response;
+package br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.exception;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

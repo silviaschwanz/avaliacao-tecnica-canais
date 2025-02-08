@@ -1,6 +1,6 @@
-package br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.exception.log;
+package br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.exception.dto;
 
-import br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.exception.response.TypeError;
+import br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.exception.TypeError;
 
 import java.time.LocalDateTime;
 

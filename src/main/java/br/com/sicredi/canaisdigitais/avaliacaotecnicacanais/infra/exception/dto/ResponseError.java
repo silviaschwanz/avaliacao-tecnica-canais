@@ -1,4 +1,6 @@
-package br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.exception.response;
+package br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.exception.dto;
+
+import br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.exception.TypeError;
 
 import java.time.LocalDateTime;
 import java.util.List;

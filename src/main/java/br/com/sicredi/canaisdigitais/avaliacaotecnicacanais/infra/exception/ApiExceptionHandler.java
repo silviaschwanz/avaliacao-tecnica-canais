@@ -1,10 +1,8 @@
 package br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.exception;
 
-import br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.exception.log.ErrorLogger;
-import br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.exception.log.WarnLogger;
-import br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.exception.response.ResponseError;
-import br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.exception.response.TypeError;
-import br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.exception.response.ValidationError;
+import br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.exception.dto.LogDetail;
+import br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.exception.dto.ResponseError;
+import br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.exception.dto.ValidationError;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,12 +24,13 @@ public class ApiExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ResponseError> handleValidationException(MethodArgumentNotValidException exception, WebRequest request) {
         String path = getPathFromRequest(request);
+        TypeError typeError = TypeError.BAD_REQUEST;
         List<ValidationError> validationErrors = exception.getBindingResult().getFieldErrors().stream()
                 .map(fieldError -> new ValidationError(fieldError.getField(), fieldError.getDefaultMessage()))
                 .collect(Collectors.toList());
-        WarnLogger.log(TypeError.BAD_REQUEST, path, exception);
-        ResponseError responseError = new ResponseError(TypeError.BAD_REQUEST, path, validationErrors);
-        return new ResponseEntity<>(responseError, TypeError.BAD_REQUEST.getHttpStatus());
+        logWarning(typeError, path, exception);
+        ResponseError responseError = new ResponseError(typeError, path, validationErrors);
+        return new ResponseEntity<>(responseError, typeError.getHttpStatus());
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
@@ -39,9 +38,10 @@ public class ApiExceptionHandler {
             EntityNotFoundException exception, WebRequest request
     ) {
         String path = getPathFromRequest(request);
-        WarnLogger.log(TypeError.NOT_FOUND, path, exception);
-        ResponseError responseError = new ResponseError(TypeError.NOT_FOUND, path);
-        return new ResponseEntity<>(responseError, TypeError.NOT_FOUND.getHttpStatus());
+        TypeError typeError = TypeError.NOT_FOUND;
+        logWarning(typeError, path, exception);
+        ResponseError responseError = new ResponseError(typeError, path);
+        return new ResponseEntity<>(responseError, typeError.getHttpStatus());
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
@@ -49,29 +49,33 @@ public class ApiExceptionHandler {
             DataIntegrityViolationException exception, WebRequest request
     ) {
         String path = getPathFromRequest(request);
-        WarnLogger.log(TypeError.BAD_REQUEST, path, exception);
-        ResponseError responseError = new ResponseError(TypeError.BAD_REQUEST, path);
-        return new ResponseEntity<>(responseError, TypeError.BAD_REQUEST.getHttpStatus());
+        TypeError typeError = TypeError.BAD_REQUEST;
+        logWarning(typeError, path, exception);
+        ResponseError responseError = new ResponseError(typeError, path);
+        return new ResponseEntity<>(responseError, typeError.getHttpStatus());
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ResponseError> handleGenericException(Exception exception, WebRequest request) {
         String path = getPathFromRequest(request);
-        ErrorLogger.log(TypeError.INTERNAL_SERVER_ERROR, path, exception);
-        ResponseError responseError = new ResponseError(TypeError.INTERNAL_SERVER_ERROR, path);
-        return new ResponseEntity<>(responseError, TypeError.INTERNAL_SERVER_ERROR.getHttpStatus());
-    }
-
-    @ExceptionHandler(Throwable.class)
-    public ResponseEntity<ResponseError> handleThrowable(Throwable throwable, WebRequest request) {
-        String path = getPathFromRequest(request);
-        ErrorLogger.log(TypeError.INTERNAL_SERVER_ERROR, path, throwable);
-        ResponseError responseError = new ResponseError(TypeError.INTERNAL_SERVER_ERROR, path);
-        return new ResponseEntity<>(responseError, TypeError.INTERNAL_SERVER_ERROR.getHttpStatus());
+        TypeError typeError = TypeError.INTERNAL_SERVER_ERROR;
+        logError(typeError, path, exception);
+        ResponseError responseError = new ResponseError(typeError, path);
+        return new ResponseEntity<>(responseError, typeError.getHttpStatus());
     }
 
     private String getPathFromRequest(WebRequest request) {
         return request.getDescription(false).replace("uri=", "");
+    }
+
+    private void logError(TypeError typeError, String path, Throwable throwable) {
+        LogDetail logDetail = new LogDetail(typeError, path, throwable);
+        logger.error("Erro no servidor: {}", logDetail);
+    }
+
+    private void logWarning(TypeError typeError, String path, Throwable throwable) {
+        LogDetail logDetail = new LogDetail(typeError, path, throwable);
+        logger.warn("Aviso na requisição: {}", logDetail);
     }
 
 }
