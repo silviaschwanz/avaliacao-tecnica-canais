@@ -2,7 +2,7 @@ package br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.controller.us
 
 import java.time.LocalDate;
 
-public record DetalharUsuarioResponse(
+public record UsuarioResponse(
         String nome,
         String email,
         EnderecoDTO endereco,

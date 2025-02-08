@@ -1,3 +1,16 @@
+# Melhorias na API de Consulta da Base Legada de Usuários referente ao Teste Técnico - Sicredi Canais - Tribo Plataforma  
+
+Para representar melhor e de forma mais desacoplada a base legada, foi utilizado docker compose para configuração e criação de dois containers, um para a aplicação e outro para os testes. Verificar as intruções de inicialização desse ambiente.  
+Foram criados dois arquivos compose para que o ambiente de teste seja gerenciado pelo componente `@Testcontainers` do springframework, cuja configuração está concentrada na classe `BaseDatabaseTestContainer`.   
+
+### Instruções para inicialização do projeto com os containers docker:
+1. Fazer `build` da imagem base_legada_test, mas sem dar up, pois ela será usada no testContainer, ele fará o seu gerenciamento  
+   `docker compose -f compose.test.yml build base_legada_test`
+2. Fazer `build` e `start` o container que representa a base legada
+   `docker compose -f compose.yml up --build -d`
+
+________________________________________________________________________________________________________________________
+
 # Teste Técnico - Sicredi Canais - Tribo Plataforma
 Seja bem-vindo ao teste técnico da tribo de Plataforma de Canais. Abaixo você encontrará as instruções necessárias para prosseguir.
 O entendimento do contexto, do escopo e do objetivo da implementação fazem parte de sua avaliação. 
@@ -46,4 +59,3 @@ Segue evidência na imagem abaixo.
 3. Crie um novo repositório público em sua conta pessoal no Github.
 4. Suba o código.
 5. Envie um email para "eduardo_fsilva@sicredi.com.br;gabriel_antunes@sicredi.com.br;juliane_melo@sicredi.com.br" com o link do repositório.
-

@@ -1,58 +1,67 @@
 package br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.gateways;
 
-import br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.controller.usuario.DetalharUsuarioResponse;
-import br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.controller.usuario.DetalharUsuarioSimplificadoResponse;
-import br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.controller.usuario.EnderecoDTO;
+import br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.controller.usuario.UsuarioResponse;
+import br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.controller.usuario.UsuarioSimplificadoResponse;
+import br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.persistence.Usuario;
 import br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.persistence.UsuarioRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
-@Component
-@RequiredArgsConstructor
+import java.util.List;
+
+@Service
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
-    private final ObjectMapper objectMapper;
+    private final UsuarioMapper usuarioMapper;
+
+    @Autowired
+    public UsuarioService(UsuarioRepository usuarioRepository, UsuarioMapper usuarioMapper) {
+        this.usuarioRepository = usuarioRepository;
+        this.usuarioMapper = usuarioMapper;
+    }
 
     @Transactional
-    public DetalharUsuarioResponse detalharUsuario(Long idUsuario) {
+    public UsuarioResponse detalharUsuario(Long idUsuario) {
         var optionalUsuario = usuarioRepository.findById(idUsuario);
 
         if (optionalUsuario.isEmpty()) {
             return null;
         }
         var usuario = optionalUsuario.get();
-        return new DetalharUsuarioResponse(
+        return new UsuarioResponse(
                 usuario.getNome(),
                 usuario.getEmail(),
-                converterEndereco(usuario.getEndereco()),
+                usuarioMapper.converterEndereco(usuario.getEndereco()),
                 usuario.getDataNascimento(),
                 usuario.getStatus()
         );
     }
 
     @Transactional
-    public DetalharUsuarioSimplificadoResponse detalharUsuarioSimplificado(Long idUsuario) {
+    public UsuarioSimplificadoResponse detalharUsuarioSimplificado(Long idUsuario) {
         var optionalUsuario = usuarioRepository.findById(idUsuario);
 
         if (optionalUsuario.isEmpty()) {
             return null;
         }
         var usuario = optionalUsuario.get();
-        return new DetalharUsuarioSimplificadoResponse(
+        return new UsuarioSimplificadoResponse(
                 usuario.getNome(),
                 usuario.getEmail()
         );
     }
 
-    private EnderecoDTO converterEndereco(String endereco) {
-        try {
-            return objectMapper.readValue(endereco, EnderecoDTO.class);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+    public List<UsuarioResponse> listarUsuarios(Pageable paginacao) {
+        Page<Usuario> usuarios = usuarioRepository.findAll(paginacao);
+        if(usuarios.isEmpty()) {
+            throw new EntityNotFoundException("Não há usuários na base de dados");
         }
+        return usuarios.stream().map(usuarioMapper::toReponse).toList();
     }
 
 }
