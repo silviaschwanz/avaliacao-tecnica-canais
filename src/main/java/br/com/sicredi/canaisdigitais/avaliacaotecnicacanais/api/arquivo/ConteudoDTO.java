@@ -1,4 +1,4 @@
-package br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.gateways;
+package br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.api.arquivo;
 
 import lombok.Data;
 

@@ -1,9 +1,5 @@
-package br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.gateways;
+package br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.api.usuario;
 
-import br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.controller.usuario.UsuarioResponse;
-import br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.controller.usuario.UsuarioSimplificadoResponse;
-import br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.persistence.Usuario;
-import br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.persistence.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +12,11 @@ import java.util.List;
 @Service
 public class UsuarioService {
 
-    private final UsuarioRepository usuarioRepository;
+    private final UsuarioJpaRepository usuarioRepository;
     private final UsuarioMapper usuarioMapper;
 
     @Autowired
-    public UsuarioService(UsuarioRepository usuarioRepository, UsuarioMapper usuarioMapper) {
+    public UsuarioService(UsuarioJpaRepository usuarioRepository, UsuarioMapper usuarioMapper) {
         this.usuarioRepository = usuarioRepository;
         this.usuarioMapper = usuarioMapper;
     }

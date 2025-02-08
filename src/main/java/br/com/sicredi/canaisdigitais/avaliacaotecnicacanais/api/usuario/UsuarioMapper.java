@@ -1,8 +1,5 @@
-package br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.gateways;
+package br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.api.usuario;
 
-import br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.controller.usuario.EnderecoDTO;
-import br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.controller.usuario.UsuarioResponse;
-import br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.persistence.Usuario;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;

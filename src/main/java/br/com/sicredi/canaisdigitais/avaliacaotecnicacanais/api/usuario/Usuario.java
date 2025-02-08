@@ -1,4 +1,4 @@
-package br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.persistence;
+package br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.api.usuario;
 
 import jakarta.persistence.*;
 import lombok.Data;

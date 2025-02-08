@@ -1,8 +1,5 @@
-package br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.controller.usuario;
+package br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.api.usuario;
 
-import br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.gateways.UsuarioService;
-import br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.persistence.Usuario;
-import br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.persistence.UsuarioRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
