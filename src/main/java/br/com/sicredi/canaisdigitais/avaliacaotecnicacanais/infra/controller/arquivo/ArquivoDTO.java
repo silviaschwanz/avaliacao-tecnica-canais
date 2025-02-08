@@ -1,4 +1,4 @@
-package br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.controller;
+package br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.controller.arquivo;
 
 import br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.gateways.ConteudoDTO;
 import com.fasterxml.jackson.annotation.JsonInclude;

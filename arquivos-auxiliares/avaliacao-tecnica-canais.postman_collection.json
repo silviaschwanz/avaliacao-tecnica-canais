@@ -1,0 +1,95 @@
+{
+	"info": {
+		"_postman_id": "0ce03170-d345-47b5-a4ae-1ec16e2c3014",
+		"name": "avaliacao-tecnica-canais",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10965902"
+	},
+	"item": [
+		{
+			"name": "Usuario",
+			"item": [
+				{
+					"name": "Listar Usuários",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_path}}/v2/usuarios",
+							"host": [
+								"{{base_path}}"
+							],
+							"path": [
+								"v2",
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Detalhar Usuário",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_path}}/v2/usuarios/3",
+							"host": [
+								"{{base_path}}"
+							],
+							"path": [
+								"v2",
+								"usuarios",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Detalhar Usuário Simplificado",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_path}}/v2/usuarios/3/simplificado",
+							"host": [
+								"{{base_path}}"
+							],
+							"path": [
+								"v2",
+								"usuarios",
+								"3",
+								"simplificado"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Arquivo",
+			"item": [
+				{
+					"name": "Listar Arquivos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_path}}/v2/arquivos",
+							"host": [
+								"{{base_path}}"
+							],
+							"path": [
+								"v2",
+								"arquivos"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

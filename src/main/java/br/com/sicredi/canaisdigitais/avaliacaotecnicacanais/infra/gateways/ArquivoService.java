@@ -2,7 +2,7 @@ package br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.gateways;
 
 import br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.persistence.Arquivo;
 import br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.persistence.ArquivoRepository;
-import br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.controller.ArquivoDTO;
+import br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.controller.arquivo.ArquivoDTO;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;

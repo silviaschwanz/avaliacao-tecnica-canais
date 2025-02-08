@@ -1,4 +1,4 @@
-package br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.controller;
+package br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.controller.arquivo;
 
 import br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.gateways.ArquivoService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/v1/arquivos")
+@RequestMapping(value = "/${api.version}/arquivos")
 @RequiredArgsConstructor
 public class ArquivoController {
 
