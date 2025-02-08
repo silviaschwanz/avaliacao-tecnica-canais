@@ -1,7 +1,7 @@
 package br.com.sicredi.canaisdigitais.avaliacaotecnicacanais;
 
-import br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.controller.arquivo.ArquivoController;
-import br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.gateways.ArquivoService;
+import br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.api.arquivo.ArquivoController;
+import br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.api.arquivo.ArquivoService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

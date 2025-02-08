@@ -1,4 +1,4 @@
-package br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.controller.usuario;
+package br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.api.usuario;
 
 import java.time.LocalDate;
 

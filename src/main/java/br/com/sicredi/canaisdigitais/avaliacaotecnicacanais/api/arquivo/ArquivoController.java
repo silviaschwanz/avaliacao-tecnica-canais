@@ -1,6 +1,5 @@
-package br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.controller.arquivo;
+package br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.api.arquivo;
 
-import br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.gateways.ArquivoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
