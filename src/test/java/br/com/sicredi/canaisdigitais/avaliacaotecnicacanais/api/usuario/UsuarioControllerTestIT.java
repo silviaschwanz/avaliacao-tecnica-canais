@@ -1,9 +1,11 @@
-package br.com.sicredi.canaisdigitais.avaliacaotecnicacanais;
+package br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.api.usuario;
 
+import br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.BaseDatabaseTestContainer;
+import br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.exception.HttpStatusCustom;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -36,8 +38,6 @@ class UsuarioControllerTestIT extends BaseDatabaseTestContainer {
     }
 
     @Test
-    @DisplayName("Dado um id de usuário existente na base de dados, ao detalhar usuário deve retornar todas as " +
-            "informações desse usuário, exceto seu id")
     void detalharUsuarioExistente() {
         given()
                 .contentType(ContentType.JSON)
@@ -58,8 +58,6 @@ class UsuarioControllerTestIT extends BaseDatabaseTestContainer {
     }
 
     @Test
-    @DisplayName("Dado um id de usuário inexistente na base de dados, ao detalhar usuário deve retornar " +
-            "status 404 - Not Found")
     void detalherUsuarioInexistente() {
         given()
                 .contentType(ContentType.JSON)
@@ -71,8 +69,19 @@ class UsuarioControllerTestIT extends BaseDatabaseTestContainer {
     }
 
     @Test
-    @DisplayName("Dado um id de usuário existente na base de dados, ao detalhar usuário de forma simplificada deve " +
-            "retornar somente nome e email desse usuário ")
+    void notFoundAoUtilizarRotaInexistente() {
+        given()
+                .contentType(ContentType.JSON)
+                .pathParam("idUsuario", 5)
+                .when()
+                .get(pathVersion + "/{idUsuario}/simples")
+                .then()
+                .statusCode(404)
+                .body("status", is(HttpStatusCustom.NOT_FOUND.name()))
+                .body("message", is("O recurso solicitado não foi encontrado"));
+    }
+
+    @Test
     void detalharUsuarioSimplificadoExistente() {
         given()
                 .contentType(ContentType.JSON)
@@ -92,9 +101,7 @@ class UsuarioControllerTestIT extends BaseDatabaseTestContainer {
     }
 
     @Test
-    @DisplayName("Dado um id de usuário inexistente na base de dados, ao detalhar usuário de forma simplificada deve " +
-            "retornar status 404 - Not Found")
-    void detalharUsuarioSimplificadoInexistente() {
+    void notFoundAoDetalharUsuarioSimplificadoInexistente() {
         given()
                 .contentType(ContentType.JSON)
                 .pathParam("idUsuario", 5)
@@ -105,7 +112,6 @@ class UsuarioControllerTestIT extends BaseDatabaseTestContainer {
     }
 
     @Test
-    @DisplayName("Deve listar todos os usuários existentes")
     void listarUsuarios() {
         given()
                 .contentType(ContentType.JSON)
@@ -115,17 +121,52 @@ class UsuarioControllerTestIT extends BaseDatabaseTestContainer {
                 .statusCode(200);
     }
 
-/*    @Test
-    @DisplayName("Quando não existirem usuários na base de dados, deve retornar status 404 not found ao listar " +
-            "todos os usuários")
+    @Test
     void notFoundAolistarUsuarios() {
         jdbcTemplate.execute("DELETE FROM USUARIO");
-        given()
+        Response response = given()
                 .contentType(ContentType.JSON)
                 .when()
                 .get(pathVersion)
                 .then()
-                .statusCode(404);
-    }*/
+                .statusCode(404)
+                .body("status", is(HttpStatusCustom.NOT_FOUND.name()))
+                .body("message", is("Não há usuários na base de dados"))
+                .extract().response();
+        response.prettyPrint();
+        resetDatabase(jdbcTemplate);
+    }
+
+    @Test
+    void erroBaseInconsisteTabelaNaoEncontrada() {
+        jdbcTemplate.execute("ALTER TABLE USUARIO RENAME TO USUARIO_TEMP");
+        Response response = given()
+                .contentType(ContentType.JSON)
+                .when()
+                .get(pathVersion)
+                .then()
+                .statusCode(500)
+                .body("status", is(HttpStatusCustom.INTERNAL_SERVER_ERROR.name()))
+                .body("message", is("Erro interno no servidor"))
+                .extract().response();
+        response.prettyPrint();
+        resetDatabase(jdbcTemplate);
+    }
+
+    @Test
+    void erroBaseInconsistenteColunaRemovida() {
+        jdbcTemplate.execute("ALTER TABLE USUARIO DROP COLUMN nome");
+        Response response = given()
+                .contentType(ContentType.JSON)
+                .when()
+                .get(pathVersion)
+                .then()
+                .statusCode(500)
+                .body("status", is(HttpStatusCustom.INTERNAL_SERVER_ERROR.name()))
+                .body("message", is("Erro interno no servidor"))
+                .extract().response();
+        response.prettyPrint();
+        resetDatabase(jdbcTemplate);
+    }
 
 }

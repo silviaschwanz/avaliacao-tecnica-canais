@@ -5,7 +5,7 @@ import java.time.LocalDate;
 public record UsuarioResponse(
         String nome,
         String email,
-        EnderecoDTO endereco,
+        Endereco endereco,
         LocalDate dataNascimento,
         String status
 ) {

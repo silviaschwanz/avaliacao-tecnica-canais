@@ -1,12 +1,14 @@
-package br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.exception.dto;
+package br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.exception.dto;
 
-import br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.infra.exception.TypeError;
+import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public record LogDetail(
         LocalDateTime timestamp,
-        String errorId,
+        String httpStatus,
         String path,
         String message,
         String exception,
@@ -15,41 +17,51 @@ public record LogDetail(
 ) {
 
     private static final String CAUSE_NOT_AVAILABLE = "Causa não disponível";
+    private static final String PACKAGE_FILTER = "br.com.sicredi.canaisdigitais";
+    private static final int MAX_STACK_DEPTH = 5;
 
-    public LogDetail(TypeError typeError, String path, Throwable throwable) {
+    public LogDetail(HttpStatus httpStatus, String path, Exception exception) {
         this(
                 LocalDateTime.now(),
-                typeError.getErrorId(),
+                httpStatus.toString(),
                 path,
-                getMessageOrDefault(throwable, typeError),
-                getExceptionName(throwable),
-                getCauseOrDefault(throwable),
-                getStackTrace(throwable)
+                exception.getMessage(),
+                getExceptionName(exception),
+                getCauseOrDefault(exception),
+                getFilteredStackTrace(exception, httpStatus)
         );
     }
 
-    private static String getMessageOrDefault(Throwable throwable, TypeError errorType) {
-        return (throwable != null && throwable.getMessage() != null)
-                ? throwable.getMessage()
-                : errorType.getDefaultMessage();
+    private static String getExceptionName(Exception exception) {
+        return (exception != null) ? exception.getClass().getSimpleName() : null;
     }
 
-    private static String getExceptionName(Throwable throwable) {
-        return (throwable != null) ? throwable.getClass().getSimpleName() : null;
-    }
-
-    private static String getCauseOrDefault(Throwable throwable) {
-        return (throwable != null && throwable.getCause() != null)
-                ? throwable.getCause().toString()
+    private static String getCauseOrDefault(Exception exception) {
+        return (exception != null && exception.getCause() != null)
+                ? exception.getCause().toString()
                 : CAUSE_NOT_AVAILABLE;
     }
 
-    private static String getStackTrace(Throwable throwable) {
-        StringBuilder stackTraceBuilder = new StringBuilder();
-        for (StackTraceElement element : throwable.getStackTrace()) {
-            stackTraceBuilder.append(element).append("\n");
+    private static String getFilteredStackTrace(Exception exception, HttpStatus httpStatus) {
+        if (exception == null) {
+            return "";
         }
-        return stackTraceBuilder.toString().trim();
+        String filteredStackTrace = Arrays.stream(exception.getStackTrace())
+                .filter(element -> element.getClassName().startsWith(PACKAGE_FILTER))
+                .limit(MAX_STACK_DEPTH)
+                .map(StackTraceElement::toString)
+                .collect(Collectors.joining("\n"));
+        if (filteredStackTrace.isEmpty() || isInternalServerError(httpStatus)) {
+            return Arrays.stream(exception.getStackTrace())
+                    .limit(MAX_STACK_DEPTH)
+                    .map(StackTraceElement::toString)
+                    .collect(Collectors.joining("\n"));
+        }
+        return filteredStackTrace;
+    }
+
+    private static boolean isInternalServerError(HttpStatus httpStatus) {
+        return httpStatus == HttpStatus.INTERNAL_SERVER_ERROR;
     }
 
 }
