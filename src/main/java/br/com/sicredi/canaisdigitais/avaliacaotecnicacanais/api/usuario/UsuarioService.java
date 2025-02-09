@@ -1,7 +1,6 @@
 package br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.api.usuario;
 
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,12 +20,10 @@ public class UsuarioService {
         this.usuarioMapper = usuarioMapper;
     }
 
-    @Transactional
     public UsuarioResponse detalharUsuario(Long idUsuario) {
         return usuarioMapper.toResponse(buscarUsuario(idUsuario));
     }
 
-    @Transactional
     public UsuarioSimplificadoResponse detalharUsuarioSimplificado(Long idUsuario) {
         return usuarioMapper.toResponseSimplificada(buscarUsuario(idUsuario));
     }
