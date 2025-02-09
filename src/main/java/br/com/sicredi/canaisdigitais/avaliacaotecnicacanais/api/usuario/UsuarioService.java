@@ -23,41 +23,37 @@ public class UsuarioService {
 
     @Transactional
     public UsuarioResponse detalharUsuario(Long idUsuario) {
-        var optionalUsuario = usuarioRepository.findById(idUsuario);
-
-        if (optionalUsuario.isEmpty()) {
-            return null;
-        }
-        var usuario = optionalUsuario.get();
-        return new UsuarioResponse(
-                usuario.getNome(),
-                usuario.getEmail(),
-                usuarioMapper.converterEndereco(usuario.getEndereco()),
-                usuario.getDataNascimento(),
-                usuario.getStatus()
-        );
+        return usuarioMapper.toResponse(buscarUsuario(idUsuario));
     }
 
     @Transactional
     public UsuarioSimplificadoResponse detalharUsuarioSimplificado(Long idUsuario) {
-        var optionalUsuario = usuarioRepository.findById(idUsuario);
-
-        if (optionalUsuario.isEmpty()) {
-            return null;
-        }
-        var usuario = optionalUsuario.get();
-        return new UsuarioSimplificadoResponse(
-                usuario.getNome(),
-                usuario.getEmail()
-        );
+        return usuarioMapper.toResponseSimplificada(buscarUsuario(idUsuario));
     }
 
     public List<UsuarioResponse> listarUsuarios(Pageable paginacao) {
-        Page<Usuario> usuarios = usuarioRepository.findAll(paginacao);
-        if(usuarios.isEmpty()) {
-            throw new EntityNotFoundException("Não há usuários na base de dados");
+        try {
+            Page<Usuario> usuarios = usuarioRepository.findAll(paginacao);
+            if (usuarios.isEmpty()) {
+                throw new EntityNotFoundException("Não há usuários na base de dados");
+            }
+            return usuarios.stream().map(usuarioMapper::toResponse).toList();
+        } catch (EntityNotFoundException exception) {
+            throw exception;
+        } catch (Exception exception) {
+            throw new RuntimeException(exception);
         }
-        return usuarios.stream().map(usuarioMapper::toReponse).toList();
+    }
+
+    private Usuario buscarUsuario(Long idUsuario) {
+        try {
+            return usuarioRepository.findById(idUsuario)
+                    .orElseThrow(() -> new EntityNotFoundException("Usuário de id " + idUsuario + "não encontrado"));
+        } catch (EntityNotFoundException exception) {
+            throw exception;
+        } catch (Exception exception) {
+            throw new RuntimeException(exception);
+        }
     }
 
 }

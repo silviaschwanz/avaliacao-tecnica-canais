@@ -15,7 +15,7 @@ public class UsuarioMapper {
         this.objectMapper = objectMapper;
     }
 
-    public UsuarioResponse toReponse(Usuario usuario) {
+    public UsuarioResponse toResponse(Usuario usuario) {
         return new UsuarioResponse(
                 usuario.getNome(),
                 usuario.getEmail(),
@@ -25,11 +25,15 @@ public class UsuarioMapper {
         );
     }
 
-    public EnderecoDTO converterEndereco(String endereco) {
+    public UsuarioSimplificadoResponse toResponseSimplificada(Usuario usuario) {
+        return new UsuarioSimplificadoResponse(usuario.getNome(), usuario.getEmail());
+    }
+
+    public Endereco converterEndereco(String endereco) {
         try {
-            return objectMapper.readValue(endereco, EnderecoDTO.class);
+            return objectMapper.readValue(endereco, Endereco.class);
         } catch (JsonProcessingException exception) {
-            throw new IllegalArgumentException("Erro ao mapear o JSON para o objeto Endereço ", exception);
+            throw new IllegalArgumentException("Erro ao mapear o JSON endereco para o objeto Endereço ", exception);
         }
     }
 

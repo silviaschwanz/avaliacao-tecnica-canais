@@ -25,7 +25,7 @@ public class UsuarioController {
     @GetMapping
     public ResponseEntity<List<UsuarioResponse>> listarUsuarios(@PageableDefault(sort = {"nome"}) Pageable paginacao) {
         var usuarios = usuarioService.listarUsuarios(paginacao);
-        return ResponseEntity.ok(usuarios);
+        return ResponseEntity.ok().body(usuarios);
     }
 
     @Operation(summary = "Retorna as informações completas de um usuário específico")
@@ -33,10 +33,7 @@ public class UsuarioController {
     @GetMapping("/{idUsuario}")
     public ResponseEntity<UsuarioResponse> detalharUsuario(@PathVariable Long idUsuario) {
         var usuario = usuarioService.detalharUsuario(idUsuario);
-        if(usuario == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(usuario);
+        return ResponseEntity.ok().body(usuario);
     }
 
     @Operation(summary = "Retorna as informações simplificadas de um usuário específico")
@@ -44,11 +41,7 @@ public class UsuarioController {
     @GetMapping("/{idUsuario}/simplificado")
     public ResponseEntity<UsuarioSimplificadoResponse> detalharUsuarioSimplificado(@PathVariable Long idUsuario) {
         var usuario = usuarioService.detalharUsuarioSimplificado(idUsuario);
-        if(usuario == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok(usuario);
+        return ResponseEntity.ok().body(usuario);
     }
 
 }

@@ -14,8 +14,3 @@ services:
           memory: 2048M
     ports:
       - "${HOST_DB_TEST_PORT}:3306"
-    volumes:
-      - base-legada-data-test:/var/lib/mysql
-
-volumes:
-  base-legada-data-test:
