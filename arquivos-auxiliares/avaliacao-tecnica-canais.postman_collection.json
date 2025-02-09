@@ -15,12 +15,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_path}}/v2/usuarios",
+							"raw": "{{base_path_v1}}/usuarios",
 							"host": [
-								"{{base_path}}"
+								"{{base_path_v1}}"
 							],
 							"path": [
-								"v2",
 								"usuarios"
 							]
 						}
@@ -33,12 +32,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_path}}/v2/usuarios/3",
+							"raw": "{{base_path_v1}}/usuarios/3",
 							"host": [
-								"{{base_path}}"
+								"{{base_path_v1}}"
 							],
 							"path": [
-								"v2",
 								"usuarios",
 								"3"
 							]
@@ -52,12 +50,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_path}}/v2/usuarios/3/simplificado",
+							"raw": "{{base_path_v1}}/usuarios/3/simplificado",
 							"host": [
-								"{{base_path}}"
+								"{{base_path_v1}}"
 							],
 							"path": [
-								"v2",
 								"usuarios",
 								"3",
 								"simplificado"
@@ -77,12 +74,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_path}}/v2/arquivos",
+							"raw": "{{base_path_v1}}/arquivos",
 							"host": [
-								"{{base_path}}"
+								"{{base_path_v1}}"
 							],
 							"path": [
-								"v2",
 								"arquivos"
 							]
 						}

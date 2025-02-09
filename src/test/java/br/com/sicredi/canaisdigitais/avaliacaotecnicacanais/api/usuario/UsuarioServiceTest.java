@@ -48,7 +48,7 @@ class UsuarioServiceTest {
                 "joao.silva@example.com",
                 enderecoResponseMock,
                 LocalDate.of(1990, 5, 20),
-                "ATIVO"
+                true
         );
         when(usuarioRepository.findById(1L)).thenReturn(Optional.of(usuarioMock));
         when(usuarioMapper.toResponse(usuarioMock)).thenReturn(usuarioResponseMock);
