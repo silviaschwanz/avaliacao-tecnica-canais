@@ -2,7 +2,6 @@ package br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.api.arquivo;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
@@ -16,7 +15,6 @@ public class ArquivoService {
     private final ArquivoJpaRepository arquivoRepository;
     private final ObjectMapper objectMapper;
 
-    @Transactional
     public List<ArquivoDTO> listarTodosArquivos() {
         return arquivoRepository.findAll().stream().map(arquivo -> toDTO(arquivo, false)).toList();
     }
