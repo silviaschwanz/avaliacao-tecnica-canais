@@ -21,7 +21,7 @@ public class UsuarioMapper {
                 usuario.getEmail(),
                 converterEndereco(usuario.getEndereco()),
                 usuario.getDataNascimento(),
-                usuario.getStatus()
+                "ATIVO".equals(usuario.getStatus())
         );
     }
 

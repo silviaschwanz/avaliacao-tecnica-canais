@@ -7,6 +7,6 @@ public record UsuarioResponse(
         String email,
         Endereco endereco,
         LocalDate dataNascimento,
-        String status
+        Boolean status
 ) {
 }

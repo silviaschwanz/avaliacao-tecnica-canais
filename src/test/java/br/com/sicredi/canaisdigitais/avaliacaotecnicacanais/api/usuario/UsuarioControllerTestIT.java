@@ -49,7 +49,7 @@ class UsuarioControllerTestIT extends BaseDatabaseTestContainer {
                 .body("nome", is("João Paulo Fonseca"))
                 .body("email", is("joaopfonseca@gmail.com"))
                 .body("dataNascimento", is("1941-01-21"))
-                .body("status", is("ATIVO"))
+                .body("status", is(true))
                 .body("endereco.logradouro", is("Rua dos Andradas"))
                 .body("endereco.numero", is(564))
                 .body("endereco.cidade", is("Gravataí"))

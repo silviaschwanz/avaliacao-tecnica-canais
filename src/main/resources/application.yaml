@@ -18,4 +18,4 @@ spring:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 
 api:
-    version: /v2
+    version: /v1
