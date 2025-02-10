@@ -24,39 +24,20 @@ class UsuarioServiceTest {
     @Mock
     UsuarioJpaRepository usuarioRepository;
 
-    @Mock
-    private UsuarioMapper usuarioMapper;
-
     @Test
-    void returnaUsuarioResponseQuandoDetalharUsuario() {
-        Usuario usuarioMock = new Usuario();
-        usuarioMock.setId(1);
-        usuarioMock.setNome("João Silva");
-        usuarioMock.setEmail("joao.silva@example.com");
-        usuarioMock.setEndereco("Rua Exemplo, 123, Cidade X, Bairro Y, RS");
-        usuarioMock.setDataNascimento(LocalDate.of(1990, 5, 20));
-        usuarioMock.setStatus("ATIVO");
-        Endereco enderecoResponseMock = new Endereco(
-                "Rua Exemplo",
-                123,
-                "Cidade X",
-                "Bairro Y",
-                "RS"
-        );
-        UsuarioResponse usuarioResponseMock = new UsuarioResponse(
-                "João Silva",
-                "joao.silva@example.com",
-                enderecoResponseMock,
-                LocalDate.of(1990, 5, 20),
-                true
-        );
-        when(usuarioRepository.findById(1L)).thenReturn(Optional.of(usuarioMock));
-        when(usuarioMapper.toResponse(usuarioMock)).thenReturn(usuarioResponseMock);
-        UsuarioResponse result = usuarioService.detalharUsuario(1L);
+    void retornarUsuarioResponseQuandoDetalharUsuario() {
+        UsuarioEntity usuarioEntityMock = new UsuarioEntity();
+        usuarioEntityMock.setId(1);
+        usuarioEntityMock.setNome("João Silva");
+        usuarioEntityMock.setEmail("joao.silva@example.com");
+        usuarioEntityMock.setEndereco("{ \"logradouro\": \"Rua Exemplo\", \"numero\": 123, \"cidade\": \"Cidade X\", \"bairro\": \"Bairro Y\", \"estado\": \"RS\" }");
+        usuarioEntityMock.setDataNascimento(LocalDate.of(1990, 5, 20));
+        usuarioEntityMock.setStatus("ATIVO");
+        when(usuarioRepository.findById(1L)).thenReturn(Optional.of(usuarioEntityMock));
+        Usuario result = usuarioService.detalharUsuario(1L);
         assertNotNull(result);
-        assertNotNull(result.endereco());
+        assertNotNull(result.getEndereco());
         verify(usuarioRepository, times(1)).findById(1L);
-        verify(usuarioMapper, times(1)).toResponse(usuarioMock);
     }
 
     @Test

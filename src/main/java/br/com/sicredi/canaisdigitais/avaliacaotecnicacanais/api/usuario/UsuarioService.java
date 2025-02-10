@@ -9,32 +9,28 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class UsuarioService {
-
-    private final UsuarioJpaRepository usuarioRepository;
-    private final UsuarioMapper usuarioMapper;
+public class UsuarioService implements UsuarioRepository{
 
     @Autowired
-    public UsuarioService(UsuarioJpaRepository usuarioRepository, UsuarioMapper usuarioMapper) {
-        this.usuarioRepository = usuarioRepository;
-        this.usuarioMapper = usuarioMapper;
+    UsuarioJpaRepository usuarioRepository;
+
+    public Usuario detalharUsuario(Long idUsuario) {
+        UsuarioEntity usuarioEntity = buscarUsuario(idUsuario);
+        return restaurar(usuarioEntity);
     }
 
-    public UsuarioResponse detalharUsuario(Long idUsuario) {
-        return usuarioMapper.toResponse(buscarUsuario(idUsuario));
+    public Usuario detalharUsuarioSimplificado(Long idUsuario) {
+        UsuarioEntity usuarioEntity = buscarUsuario(idUsuario);
+        return Usuario.restaurarSimplificado(usuarioEntity.getNome(), usuarioEntity.getEmail());
     }
 
-    public UsuarioSimplificadoResponse detalharUsuarioSimplificado(Long idUsuario) {
-        return usuarioMapper.toResponseSimplificada(buscarUsuario(idUsuario));
-    }
-
-    public List<UsuarioResponse> listarUsuarios(Pageable paginacao) {
+    public List<Usuario> listarUsuarios(Pageable paginacao) {
         try {
-            Page<Usuario> usuarios = usuarioRepository.findAll(paginacao);
+            Page<UsuarioEntity> usuarios = usuarioRepository.findAll(paginacao);
             if (usuarios.isEmpty()) {
                 throw new EntityNotFoundException("Não há usuários na base de dados");
             }
-            return usuarios.stream().map(usuarioMapper::toResponse).toList();
+            return usuarios.stream().map(this::restaurar).toList();
         } catch (EntityNotFoundException exception) {
             throw exception;
         } catch (Exception exception) {
@@ -42,7 +38,17 @@ public class UsuarioService {
         }
     }
 
-    private Usuario buscarUsuario(Long idUsuario) {
+    private Usuario restaurar(UsuarioEntity usuario) {
+        return Usuario.restaurar(
+                usuario.getNome(),
+                usuario.getEmail(),
+                usuario.getEndereco(),
+                usuario.getDataNascimento(),
+                usuario.getStatus()
+        );
+    }
+
+    private UsuarioEntity buscarUsuario(Long idUsuario) {
         try {
             return usuarioRepository.findById(idUsuario)
                     .orElseThrow(() -> new EntityNotFoundException("Usuário de id " + idUsuario + "não encontrado"));
