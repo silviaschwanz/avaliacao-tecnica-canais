@@ -12,7 +12,7 @@ import java.util.List;
 public class UsuarioService implements UsuarioRepository{
 
     @Autowired
-    UsuarioJpaRepository usuarioRepository;
+    UsuarioJpaRepository usuarioJpaRepository;
 
     public Usuario detalharUsuario(Long idUsuario) {
         try {
@@ -21,7 +21,7 @@ public class UsuarioService implements UsuarioRepository{
         } catch (EntityNotFoundException exception) {
             throw exception;
         } catch (Exception exception) {
-            throw new RuntimeException("Erro inesperado", exception);
+            throw new RuntimeException(exception);
         }
     }
 
@@ -32,13 +32,13 @@ public class UsuarioService implements UsuarioRepository{
         } catch (EntityNotFoundException exception) {
             throw exception;
         } catch (Exception exception) {
-            throw new RuntimeException("Erro inesperado", exception);
+            throw new RuntimeException(exception);
         }
     }
 
     public List<Usuario> listarUsuarios(Pageable paginacao) {
         try {
-            Page<UsuarioEntity> usuarios = usuarioRepository.findAll(paginacao);
+            Page<UsuarioEntity> usuarios = usuarioJpaRepository.findAll(paginacao);
             if (usuarios.isEmpty()) {
                 throw new EntityNotFoundException("Não há usuários na base de dados");
             }
@@ -46,7 +46,7 @@ public class UsuarioService implements UsuarioRepository{
         } catch (EntityNotFoundException exception) {
             throw exception;
         } catch (Exception exception) {
-            throw new RuntimeException("Erro inesperado", exception);
+            throw new RuntimeException(exception);
         }
     }
 
@@ -61,12 +61,12 @@ public class UsuarioService implements UsuarioRepository{
     }
 
     private UsuarioEntity buscarUsuario(Long idUsuario) {
-        return usuarioRepository.findById(idUsuario)
+        return usuarioJpaRepository.findById(idUsuario)
                 .orElseThrow(() -> new EntityNotFoundException("Usuário de id " + idUsuario + "não encontrado"));
     }
 
     private UsuarioSimplificadoProjection buscarUsuarioSimplificado(Long idUsuario) {
-        return usuarioRepository.findUsuarioSimplificadoById(idUsuario)
+        return usuarioJpaRepository.findUsuarioSimplificadoById(idUsuario)
                 .orElseThrow(() -> new EntityNotFoundException("Usuário de id " + idUsuario + " não encontrado"));
     }
 
