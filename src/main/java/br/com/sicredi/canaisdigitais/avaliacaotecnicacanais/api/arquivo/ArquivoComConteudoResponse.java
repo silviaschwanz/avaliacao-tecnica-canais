@@ -1,10 +1,10 @@
 package br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.api.arquivo;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
 
-public record Conteudo(
+public record ArquivoComConteudoResponse(
+        String nomeArquivo,
         String titulo,
         LocalDate dataPublicacao,
         List<String> tags

@@ -33,7 +33,7 @@ public class UsuarioController {
     @Operation(summary = "Entrega uma lista com todos os usuários presentes na base de dados")
     @ApiResponse(responseCode = "200", description = "Lista de usuários existentes na base de dados")
     @GetMapping
-    public ResponseEntity<List<UsuarioResponse>> listarUsuarios(@PageableDefault(sort = {"nome"}) Pageable paginacao) {
+    public ResponseEntity<List<UsuarioResponse>> listarUsuarios(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao) {
         var usuarios = listarUsuarios.execute(paginacao);
         return ResponseEntity.ok().body(usuarios);
     }

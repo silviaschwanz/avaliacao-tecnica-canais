@@ -1,41 +1,39 @@
 package br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.api.arquivo;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
-import org.springframework.stereotype.Component;
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-@Component
-@RequiredArgsConstructor
-public class ArquivoService {
+@Service
+public class ArquivoService implements ArquivoRepository{
 
-    private final ArquivoJpaRepository arquivoRepository;
-    private final ObjectMapper objectMapper;
+    @Autowired
+    ArquivoJpaRepository arquivoJpaRepository;
 
-    public List<ArquivoDTO> listarTodosArquivos() {
-        return arquivoRepository.findAll().stream().map(arquivo -> toDTO(arquivo, false)).toList();
-    }
-
-    @SneakyThrows
-    private ArquivoDTO toDTO(ArquivoEntity arquivo, boolean comConteudo) {
-        var arquivoDTO = new ArquivoDTO();
-        arquivoDTO.setNomeArquivo(arquivo.getNomeArquivo());
-        arquivoDTO.setIdUsuarioOwner(arquivo.getIdUsuarioOwner());
-
-        if (comConteudo) {
-            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
-            var conteudo = objectMapper.readValue(arquivo.getConteudo(), ConteudoDTO.class);
-            arquivoDTO.setConteudo(conteudo);
+    public List<Arquivo> listarTodosArquivos(Pageable paginacao) {
+        Page<ArquivoProjection> arquivos = arquivoJpaRepository.findArquivos(paginacao);
+        if (arquivos.isEmpty()) {
+            throw new EntityNotFoundException("Não há arquivos na base de dados");
         }
-
-        return arquivoDTO;
+        return arquivos.stream().map(arquivo -> Arquivo.restaurar(arquivo.getNome())).toList();
     }
 
-    public List<ArquivoDTO> listarArquivosUsuario(Long idUsuario) {
-        return arquivoRepository.findByIdUsuarioOwner(idUsuario).stream().map(arquivo -> toDTO(arquivo, true)).toList();
+    public List<Arquivo> listarArquivosUsuario(Long idUsuario, Pageable paginacao) {
+        Page<ArquivoComConteudoProjection> arquivosProjection = arquivoJpaRepository.findArquivosDoUsuario(idUsuario, paginacao);
+        if (arquivosProjection.isEmpty()) {
+            throw new EntityNotFoundException("Não há arquivos na base de dados");
+        }
+        return arquivosProjection.stream()
+                .map(projection -> Arquivo.restaurarComConteudo(
+                        projection.getNomeArquivo(),
+                        projection.getConteudo()
+                ))
+                .collect(Collectors.toList());
     }
 
 }

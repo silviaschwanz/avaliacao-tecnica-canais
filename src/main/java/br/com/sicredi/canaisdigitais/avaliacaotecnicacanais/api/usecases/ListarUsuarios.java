@@ -18,7 +18,7 @@ public class ListarUsuarios {
         return usuarios.stream().map(this::toResponse).toList();
     }
 
-    public UsuarioResponse toResponse(Usuario usuario) {
+    private UsuarioResponse toResponse(Usuario usuario) {
         return new UsuarioResponse(
                 usuario.getNome(),
                 usuario.getEmail(),

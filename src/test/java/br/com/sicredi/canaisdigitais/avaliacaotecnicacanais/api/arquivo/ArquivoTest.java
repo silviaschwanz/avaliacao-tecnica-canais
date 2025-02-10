@@ -7,7 +7,6 @@ import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -23,16 +22,15 @@ class ArquivoTest {
 
     @Test
     void restaurarArquivoComConteudo() {
-        String titulo = "Inflação e Impactos na Sociedade";
-        LocalDate dataPublicacao = LocalDate.parse("2012-08-22");
-        String tagsString = "economia;inflacao;governo;taxadejuros";
-        Conteudo conteudo = new Conteudo(titulo, dataPublicacao, tagsString);
-        Arquivo arquivo = Arquivo.restaurarComConteudo("arquivo213.txt", conteudo);
+        String conteudoJson = "{"
+                + "\"titulo\": \"Estudo Sobre Microbiologia\", "
+                + "\"dataPublicacao\": \"2005-03-27\", "
+                + "\"tags\": [\"cientifico\", \"experimento\", \"biologia\", \"validacao\", \"microbiota\"]"
+                + "}";
+        Arquivo arquivo = Arquivo.restaurarComConteudo("arquivo213.txt", conteudoJson);
         assertEquals("arquivo213.txt", arquivo.getNome());
-        assertEquals(titulo, arquivo.getConteudo().titulo());
-        assertEquals(dataPublicacao, arquivo.getConteudo().dataPublicacao());
-        var tagsEsperadas = Arrays.asList(tagsString.split(";"));
-        assertEquals(tagsEsperadas, arquivo.getConteudo().tags());
+        assertEquals("Estudo Sobre Microbiologia", arquivo.getConteudo().titulo());
+        assertEquals(LocalDate.of(2005,03,27), arquivo.getConteudo().dataPublicacao());
     }
 
     @ParameterizedTest
@@ -42,7 +40,7 @@ class ArquivoTest {
         IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
             Arquivo.restaurar(nome);
         });
-        String mensagemEsperada = "O parâmetro nome não pode ser nulo, vazio ou estar em branco";
+        String mensagemEsperada = "O parâmetro nomeArquivo não pode ser nulo, vazio ou estar em branco";
         assertEquals(mensagemEsperada, exception.getMessage());
     }
 
