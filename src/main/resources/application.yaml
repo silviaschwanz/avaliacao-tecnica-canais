@@ -19,3 +19,8 @@ spring:
 
 api:
     version: /v1
+
+logging:
+  level:
+    org:
+      springframework: DEBUG

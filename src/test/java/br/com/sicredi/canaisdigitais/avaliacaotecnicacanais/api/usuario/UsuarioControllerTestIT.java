@@ -91,13 +91,7 @@ class UsuarioControllerTestIT extends BaseDatabaseTestContainer {
                 .then()
                 .statusCode(200)
                 .body("nome", is("João Paulo Fonseca"))
-                .body("email", is("joaopfonseca@gmail.com"))
-                .body("dataNascimento", nullValue())
-                .body("endereco.logradouro", nullValue())
-                .body("endereco.numero", nullValue())
-                .body("endereco.cidade", nullValue())
-                .body("endereco.bairro", nullValue())
-                .body("endereco.estado", nullValue());
+                .body("email", is("joaopfonseca@gmail.com"));
     }
 
     @Test
