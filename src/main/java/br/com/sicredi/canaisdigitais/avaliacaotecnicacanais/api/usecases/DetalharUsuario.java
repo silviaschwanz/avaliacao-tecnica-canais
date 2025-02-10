@@ -11,6 +11,9 @@ public class DetalharUsuario {
     UsuarioRepository usuarioRepository;
 
     public UsuarioResponse execute(Long idUsuario) {
+        if (idUsuario == null) {
+            throw new IllegalArgumentException("O ID do usuário não pode ser nulo");
+        }
         Usuario usuario = usuarioRepository.detalharUsuario(idUsuario);
         return new UsuarioResponse(
                 usuario.getNome(),

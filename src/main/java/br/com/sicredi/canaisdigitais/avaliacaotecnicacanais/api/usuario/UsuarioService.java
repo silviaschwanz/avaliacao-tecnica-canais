@@ -15,13 +15,25 @@ public class UsuarioService implements UsuarioRepository{
     UsuarioJpaRepository usuarioRepository;
 
     public Usuario detalharUsuario(Long idUsuario) {
-        UsuarioEntity usuarioEntity = buscarUsuario(idUsuario);
-        return restaurar(usuarioEntity);
+        try {
+            UsuarioEntity usuarioEntity = buscarUsuario(idUsuario);
+            return restaurar(usuarioEntity);
+        } catch (EntityNotFoundException exception) {
+            throw exception;
+        } catch (Exception exception) {
+            throw new RuntimeException("Erro inesperado", exception);
+        }
     }
 
     public Usuario detalharUsuarioSimplificado(Long idUsuario) {
-        UsuarioEntity usuarioEntity = buscarUsuario(idUsuario);
-        return Usuario.restaurarSimplificado(usuarioEntity.getNome(), usuarioEntity.getEmail());
+        try {
+            UsuarioSimplificadoProjection usuarioSimplificado= buscarUsuarioSimplificado(idUsuario);
+            return Usuario.restaurarSimplificado(usuarioSimplificado.getNome(), usuarioSimplificado.getEmail());
+        } catch (EntityNotFoundException exception) {
+            throw exception;
+        } catch (Exception exception) {
+            throw new RuntimeException("Erro inesperado", exception);
+        }
     }
 
     public List<Usuario> listarUsuarios(Pageable paginacao) {
@@ -34,7 +46,7 @@ public class UsuarioService implements UsuarioRepository{
         } catch (EntityNotFoundException exception) {
             throw exception;
         } catch (Exception exception) {
-            throw new RuntimeException(exception);
+            throw new RuntimeException("Erro inesperado", exception);
         }
     }
 
@@ -49,14 +61,13 @@ public class UsuarioService implements UsuarioRepository{
     }
 
     private UsuarioEntity buscarUsuario(Long idUsuario) {
-        try {
-            return usuarioRepository.findById(idUsuario)
-                    .orElseThrow(() -> new EntityNotFoundException("Usuário de id " + idUsuario + "não encontrado"));
-        } catch (EntityNotFoundException exception) {
-            throw exception;
-        } catch (Exception exception) {
-            throw new RuntimeException(exception);
-        }
+        return usuarioRepository.findById(idUsuario)
+                .orElseThrow(() -> new EntityNotFoundException("Usuário de id " + idUsuario + "não encontrado"));
+    }
+
+    private UsuarioSimplificadoProjection buscarUsuarioSimplificado(Long idUsuario) {
+        return usuarioRepository.findUsuarioSimplificadoById(idUsuario)
+                .orElseThrow(() -> new EntityNotFoundException("Usuário de id " + idUsuario + " não encontrado"));
     }
 
 }
