@@ -4,7 +4,6 @@ import br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.BaseDatabaseTestCont
 import br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.exception.HttpStatusCustom;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class UsuarioControllerTestIT extends BaseDatabaseTestContainer {
@@ -118,7 +116,7 @@ class UsuarioControllerTestIT extends BaseDatabaseTestContainer {
     @Test
     void notFoundAolistarUsuarios() {
         jdbcTemplate.execute("DELETE FROM USUARIO");
-        Response response = given()
+        given()
                 .contentType(ContentType.JSON)
                 .when()
                 .get(pathVersion)
@@ -127,14 +125,13 @@ class UsuarioControllerTestIT extends BaseDatabaseTestContainer {
                 .body("status", is(HttpStatusCustom.NOT_FOUND.name()))
                 .body("message", is("Não há usuários na base de dados"))
                 .extract().response();
-        response.prettyPrint();
         resetDatabase(jdbcTemplate);
     }
 
     @Test
     void erroBaseInconsisteTabelaNaoEncontrada() {
         jdbcTemplate.execute("ALTER TABLE USUARIO RENAME TO USUARIO_TEMP");
-        Response response = given()
+        given()
                 .contentType(ContentType.JSON)
                 .when()
                 .get(pathVersion)
@@ -143,14 +140,13 @@ class UsuarioControllerTestIT extends BaseDatabaseTestContainer {
                 .body("status", is(HttpStatusCustom.INTERNAL_SERVER_ERROR.name()))
                 .body("message", is("Erro interno no servidor"))
                 .extract().response();
-        response.prettyPrint();
         resetDatabase(jdbcTemplate);
     }
 
     @Test
     void erroBaseInconsistenteColunaRemovidaAoListarUsuarios() {
         jdbcTemplate.execute("ALTER TABLE USUARIO DROP COLUMN nome");
-        Response response = given()
+        given()
                 .contentType(ContentType.JSON)
                 .when()
                 .get(pathVersion)
@@ -159,14 +155,13 @@ class UsuarioControllerTestIT extends BaseDatabaseTestContainer {
                 .body("status", is(HttpStatusCustom.INTERNAL_SERVER_ERROR.name()))
                 .body("message", is("Erro interno no servidor"))
                 .extract().response();
-        response.prettyPrint();
         resetDatabase(jdbcTemplate);
     }
 
     @Test
     void erroBaseInconsisteTabelaNaoEncontradaAoDetalharUsuario() {
         jdbcTemplate.execute("ALTER TABLE USUARIO DROP COLUMN nome");
-        Response response = given()
+        given()
                 .contentType(ContentType.JSON)
                 .pathParam("idUsuario", 5)
                 .when()
@@ -176,7 +171,6 @@ class UsuarioControllerTestIT extends BaseDatabaseTestContainer {
                 .body("status", is(HttpStatusCustom.INTERNAL_SERVER_ERROR.name()))
                 .body("message", is("Erro interno no servidor"))
                 .extract().response();
-        response.prettyPrint();
         resetDatabase(jdbcTemplate);
     }
 
