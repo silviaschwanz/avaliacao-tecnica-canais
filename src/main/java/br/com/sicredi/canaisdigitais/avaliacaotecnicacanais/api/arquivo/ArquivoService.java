@@ -20,7 +20,7 @@ public class ArquivoService {
     }
 
     @SneakyThrows
-    private ArquivoDTO toDTO(Arquivo arquivo, boolean comConteudo) {
+    private ArquivoDTO toDTO(ArquivoEntity arquivo, boolean comConteudo) {
         var arquivoDTO = new ArquivoDTO();
         arquivoDTO.setNomeArquivo(arquivo.getNomeArquivo());
         arquivoDTO.setIdUsuarioOwner(arquivo.getIdUsuarioOwner());

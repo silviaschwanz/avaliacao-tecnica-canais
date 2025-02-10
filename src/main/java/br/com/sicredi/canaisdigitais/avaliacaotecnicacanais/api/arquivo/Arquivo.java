@@ -1,26 +1,37 @@
 package br.com.sicredi.canaisdigitais.avaliacaotecnicacanais.api.arquivo;
 
-import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
 
-import static jakarta.persistence.GenerationType.IDENTITY;
-
-@Entity
-@Table(name = "ARQUIVO")
-@Data
+@Getter
 public class Arquivo {
 
-    @Id
-    @GeneratedValue(strategy = IDENTITY)
-    private Integer id;
+    private final String nome;
+    private Conteudo conteudo;
 
-    @Column(name = "NOME")
-    private String nomeArquivo;
+    public Arquivo(String nome) {
+        stringNotNullOrIsBlank(nome);
+        this.nome = nome;
+    }
 
-    @Column(name = "ID_USUARIO")
-    private Long idUsuarioOwner;
+    public Arquivo(String nome, Conteudo conteudo) {
+        stringNotNullOrIsBlank(nome);
+        this.nome = nome;
+        this.conteudo = conteudo;
+    }
 
-    @Column(name = "CONTEUDO")
-    private String conteudo;
+    public static Arquivo restaurar(String nome) {
+        return new Arquivo(nome);
+    }
+
+    public static Arquivo restaurarComConteudo(String nome, Conteudo conteudo) {
+        return new Arquivo(nome, conteudo);
+    }
+
+    private void stringNotNullOrIsBlank(String field) {
+        if(field == null || field.isBlank()) {
+            throw new IllegalArgumentException("O parâmetro nome não pode ser nulo, " +
+                    "vazio ou estar em branco");
+        }
+    }
 
 }

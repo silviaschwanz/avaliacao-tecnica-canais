@@ -6,8 +6,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ArquivoJpaRepository extends JpaRepository<Arquivo, Long> {
+public interface ArquivoJpaRepository extends JpaRepository<ArquivoEntity, Long> {
 
-    List<Arquivo> findByIdUsuarioOwner(Long idUsuario);
+    List<ArquivoEntity> findByIdUsuarioOwner(Long idUsuario);
 
 }
