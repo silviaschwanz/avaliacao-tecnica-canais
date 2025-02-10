@@ -7,6 +7,7 @@ import java.util.List;
 public record Conteudo(
         String titulo,
         LocalDate dataPublicacao,
-        List<String> tags
+        String tags
 ) {
+
 }

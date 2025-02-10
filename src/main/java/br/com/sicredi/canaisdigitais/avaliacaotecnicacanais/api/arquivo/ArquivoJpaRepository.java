@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ArquivoJpaRepository extends JpaRepository<ArquivoEntity, Long> {
 
-    @Query("SELECT a.nomeArquivo AS nomeArquivo FROM ArquivoEntity a")
+    @Query("SELECT a.nomeArquivo AS nome FROM ArquivoEntity a")
     Page<ArquivoProjection> findArquivos(Pageable paginacao);
 
     @Query("""

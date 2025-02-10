@@ -10,14 +10,12 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
 class ArquivoTest {
 
     @Test
     void restaurarArquivoComNomeValido() {
         Arquivo arquivo = Arquivo.restaurar("arquivo213.txt");
         assertEquals("arquivo213.txt", arquivo.getNome());
-
     }
 
     @Test
@@ -25,12 +23,13 @@ class ArquivoTest {
         String conteudoJson = "{"
                 + "\"titulo\": \"Estudo Sobre Microbiologia\", "
                 + "\"dataPublicacao\": \"2005-03-27\", "
-                + "\"tags\": [\"cientifico\", \"experimento\", \"biologia\", \"validacao\", \"microbiota\"]"
+                + "\"tags\": \"cientifico;experimento;biologia;validacao;microbiota\""
                 + "}";
         Arquivo arquivo = Arquivo.restaurarComConteudo("arquivo213.txt", conteudoJson);
         assertEquals("arquivo213.txt", arquivo.getNome());
         assertEquals("Estudo Sobre Microbiologia", arquivo.getConteudo().titulo());
-        assertEquals(LocalDate.of(2005,03,27), arquivo.getConteudo().dataPublicacao());
+        assertEquals(LocalDate.of(2005, 3, 27), arquivo.getConteudo().dataPublicacao());
+        assertEquals("cientifico;experimento;biologia;validacao;microbiota", arquivo.getConteudo().tags());
     }
 
     @ParameterizedTest

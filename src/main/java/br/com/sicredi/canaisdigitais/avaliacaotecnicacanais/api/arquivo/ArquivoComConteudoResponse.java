@@ -7,6 +7,6 @@ public record ArquivoComConteudoResponse(
         String nomeArquivo,
         String titulo,
         LocalDate dataPublicacao,
-        List<String> tags
+        String tags
 ) {
 }
