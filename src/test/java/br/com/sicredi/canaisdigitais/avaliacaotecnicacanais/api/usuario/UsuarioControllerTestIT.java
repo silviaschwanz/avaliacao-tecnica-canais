@@ -148,7 +148,7 @@ class UsuarioControllerTestIT extends BaseDatabaseTestContainer {
     }
 
     @Test
-    void erroBaseInconsistenteColunaRemovida() {
+    void erroBaseInconsistenteColunaRemovidaAoListarUsuarios() {
         jdbcTemplate.execute("ALTER TABLE USUARIO DROP COLUMN nome");
         Response response = given()
                 .contentType(ContentType.JSON)
@@ -162,5 +162,24 @@ class UsuarioControllerTestIT extends BaseDatabaseTestContainer {
         response.prettyPrint();
         resetDatabase(jdbcTemplate);
     }
+
+    @Test
+    void erroBaseInconsisteTabelaNaoEncontradaAoDetalharUsuario() {
+        jdbcTemplate.execute("ALTER TABLE USUARIO DROP COLUMN nome");
+        Response response = given()
+                .contentType(ContentType.JSON)
+                .pathParam("idUsuario", 5)
+                .when()
+                .get(pathVersion + "/{idUsuario}")
+                .then()
+                .statusCode(500)
+                .body("status", is(HttpStatusCustom.INTERNAL_SERVER_ERROR.name()))
+                .body("message", is("Erro interno no servidor"))
+                .extract().response();
+        response.prettyPrint();
+        resetDatabase(jdbcTemplate);
+    }
+
+
 
 }

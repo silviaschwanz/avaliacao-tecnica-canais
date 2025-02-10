@@ -25,7 +25,7 @@ class UsuarioServiceTest {
     UsuarioJpaRepository usuarioRepository;
 
     @Test
-    void retornarUsuarioResponseQuandoDetalharUsuario() {
+    void retornarUsuarioQuandoDetalharUsuario() {
         UsuarioEntity usuarioEntityMock = new UsuarioEntity();
         usuarioEntityMock.setId(1);
         usuarioEntityMock.setNome("João Silva");
@@ -41,7 +41,20 @@ class UsuarioServiceTest {
     }
 
     @Test
-    void runtimeExceptionQuandoRepositorioFalhar() {
+    void retornarUsuarioSimplificadoQuandoDetalharUsuario() {
+        UsuarioSimplificadoProjection usuarioSimplificadoMock = mock(UsuarioSimplificadoProjection.class);
+        when(usuarioSimplificadoMock.getNome()).thenReturn("João Silva");
+        when(usuarioSimplificadoMock.getEmail()).thenReturn("joao.silva@example.com");
+        when(usuarioRepository.findUsuarioSimplificadoById(1L)).thenReturn(Optional.of(usuarioSimplificadoMock));
+        Usuario result = usuarioService.detalharUsuarioSimplificado(1L);
+        assertNotNull(result, "O resultado não deveria ser nulo.");
+        assertEquals("João Silva", result.getNome(), "O nome retornado não é o esperado.");
+        assertEquals("joao.silva@example.com", result.getEmail(), "O e-mail retornado não é o esperado.");
+        verify(usuarioRepository, times(1)).findUsuarioSimplificadoById(1L);
+    }
+
+    @Test
+    void runtimeExceptionQuandoRepositorioFalharAoBuscarListaDeUsuarios() {
         Pageable paginacao = Pageable.ofSize(10);
         when(usuarioRepository.findAll(paginacao)).thenThrow(new IllegalStateException("Erro de banco de dados"));
         RuntimeException thrownException = assertThrows(RuntimeException.class, () -> {
