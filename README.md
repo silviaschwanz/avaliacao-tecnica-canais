@@ -52,10 +52,3 @@ O comportamento parece se normalizar sem nenhuma intervenção algum tempo depoi
 Segue evidência na imagem abaixo.
 
 ![Imagem de evidência](src/main/resources/imagemBug.png)
-
-### Como entregar
-1. Faça um `clone` deste repositório em sua máquina.
-2. Realize a implementação.
-3. Crie um novo repositório público em sua conta pessoal no Github.
-4. Suba o código.
-5. Envie um email para "eduardo_fsilva@sicredi.com.br;gabriel_antunes@sicredi.com.br;juliane_melo@sicredi.com.br" com o link do repositório.
